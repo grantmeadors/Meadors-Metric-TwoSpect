@@ -102,33 +102,35 @@ g_{ab} = \frac{1}{2} \partial_a \partial_b \mu.
 For the $[f, \Delta f]$ parameter space, the mismatch metric For TwoSpect is, in this first approximation,
 
 \begin{equation}
-  g = 2(\frac{\pi^2}{6} - 1) T_\mathrm{sft}^2  [[1, 0][0, 1]].
+  g = 2 \left(\frac{\pi^2}{6} - 1\right) T_\mathrm{sft}^2  [[1, 0][0, 1]].
 \end{equation}
 
 Along lines of $f$ or $\Delta f$, this returns
-the same mismatch using Brady \textit{et al} eq 5.11 as does the actual mismatch:
+the same mismatch using Brady \textit{et al} eq 5.11 ($\mu = g_{\alpha\beta} \Delta \lambda^\alpha \Delta \lambda^\beta$) as does the actual mismatch:
 
 \begin{equation}
 \mu = (\pi^2/6 -1) T_\mathrm{sft}^2 
-        [(f_0 + \Delta f_0 - (f + \Delta f))^2 + (f_0 - \Delta f_0 - (f - \Delta f)^2) ],
+        [(f_0 + \Delta f_0 - (f + \Delta f))^2 + (f_0 - \Delta f_0 - (f - \Delta f))^2 ],
 \end{equation}
 
 Of course, the metric
 fails to capture the degeneracies along the diagonals.
 As a quadratic approximation, it cannot capture that complexity.
 
+\section{Grid spacing}
+
 We find that the nearest template in either dimension should be
 
 \begin{equation}
-[f-f0] = (2 (\pi^2/6 - 1))^(-1/2) * \sqrt(\mu) / T_\mathrm{sft}
-       \approx 0.88 \sqrt(\mu) / T_\mathrm{sft}
+[f-f0] = \left(2 (\pi^2/6 - 1)\right)^{-1/2} T_\mathrm{sft}^{-1} \sqrt{\mu}
+       \approx 0.88  T_\mathrm{sft}^{-1} \sqrt{\mu}
 \end{equation}
 
 \noindent
-which for 0.2 mismatch (our standard in S6) is
+which for $0.2$ mismatch (our standard in S6) is
 
 \begin{equation}
-[f-f0] = 0.39/T_\mathrm{sft}
+[f-f0] = 0.39 T_\mathrm{sft}^{-1}
 \end{equation}
 
 We have a grid spacing of $0.5/T_\mathrm{sft}$, meaning that in the 1D case the
