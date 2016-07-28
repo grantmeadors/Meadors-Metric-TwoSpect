@@ -19,17 +19,19 @@ We would like to make a first approximation to the TwoSpect metric, analytically
 
 \section{Derivation}
 
-Start with the 2011 TwoSpect methods paper, eq. 20:
+The metric is computed from the mismatch in the $R$ statistic, which is the sum of pixel powers $|\mathcal{F}(|x_z (n)|^2)|^2$.
+Start with the 2011 TwoSpect methods paper, eq. 20, giving the pixel power in the 1st FFT plane as the Dirichlet kernel:
 
 \begin{equation}
-|x_z (n)|^2 = \frac{\mathrm{sinc}^2 (k+ \Delta f T_\mathrm{sft} \sin (2 \pi T_m n / P)-z}{[(k+df T_\mathrm{sft}
+|x_z (n)|^2 = \frac{2}{3} \frac{\mathrm{sinc}^2 (k+ \Delta f T_\mathrm{sft} \sin (2 \pi T_m n / P)-z}{[(k+df T_\mathrm{sft}
               \sin (2 \pi T_m n / P) -z)^2 -1]^2},
 \end{equation}
 
 \noindent and let $\epsilon = k+ df0 T_\mathrm{sft} \sin(2\pi T_m n / P)-z$,
 ergo $\epsilon = T_\mathrm{sft}(f0+ df0 \sin(2\pi T_m n /P) - (f+df) )$.
-Note $T_m = T_\mathrm{sft/2}$, and that
-we use $\mathrm{sinc}(x) := sin(\pi x)/(\pi x)$
+Note $T_m = T_\mathrm{sft/2}$. 
+We will drop the coefficient $2/3$, because we will take the ratio of $R$ statistics (and thus these pixel powers).
+We use $\mathrm{sinc}(x) \equiv \sin(\pi x)/(\pi x)$,
 so
 
 \begin{equation}
@@ -47,11 +49,11 @@ higher-order treatment. (For orbital period, one cannot). So pretend the
 
 Taylor expand that pixel, \textit{i.e.,} Dirichlet kernel squared:
 
-\begin{equation}
-|x_z (n)|^4 \approx 1 + (2- \pi^2/3) \epsilon^2
-             = 1 + (2 -\pi^2/3) T_\mathrm{sft}^2
+\begin{eqnarray}
+|x_z (n)|^4 & \approx & 1 + \left(2- \frac{\pi^2}{3}\right) \epsilon^2,\\
+             &=& 1 + \left(2 -\frac{\pi^2}{3}\right) T_\mathrm{sft}^2
                  (f_0+ \Delta f_0 \sin(2\pi T_m n /P) - (f+\Delta f))^2.
-\end{equation}
+\end{eqnarray}
 
 Remember that for the 2nd FFT plane power that contributes to the $R$ statistic, most power is concentrated in pixels at the modulation depth extremes, especially at the first harmonic.
 Ignoring background subtraction, we assume a mismatch will affect all the pixels in these extremes equivalently, regardless of weighting.
@@ -60,7 +62,7 @@ Then construct this highly-simplified $R$ statistic out of two of these pixels, 
 lower extremes:
 
 \begin{equation}
-R \propto 2 + (2 -\pi^2/3) T_\mathrm{sft}^2 *
+R \propto 2 + \left(2 -\frac{\pi^2}{3}\right) T_\mathrm{sft}^2
              [(f_0+\Delta f_0- (f+\Delta f))^2 + (f_0-\Delta f_0- (f-\Delta f))^2].
 \end{equation}
 
@@ -74,9 +76,9 @@ R_\mathrm{max} = 2.
 \noindent So 
 
 \begin{eqnarray}
-\mu &=& 1 - R / R_\mathrm{max}\\
-      &=& (\pi^2/6 - 1) T_\mathrm{sft}^2
-             [(f_0+\Delta f_0- (f+\Delta f))^2 + (f_0-\Delta f_0- (f- \Delta f))^2]
+\mu &=& 1 - R / R_\mathrm{max},\\
+      &=& \left(\frac{\pi^2}{6} - 1\right) T_\mathrm{sft}^2 \nonumber \\
+      &~& \times [(f_0+\Delta f_0- (f+\Delta f))^2 + (f_0-\Delta f_0- (f- \Delta f))^2].
 \end{eqnarray}
 
 \noindent Then the metric follows from
@@ -89,8 +91,8 @@ g_{ab} = \frac{1}{2} \partial_a \partial_b \mu.
 \noindent Begin with
 
 \begin{eqnarray}
-\partial_f \mu &=& 4(\pi^2/6 -1) T_\mathrm{sft}^2 (f-f_0),\\
-\partial_{\Delta f} \mu &=& 4(\pi^2/6-1) T_\mathrm{sft}^2 (\Delta f - \Delta f_0).
+\partial_f (\mu) &=& 4 \left(\frac{\pi^2}{6} -1\right) T_\mathrm{sft}^2 (f-f_0),\\
+\partial_{\Delta f} (\mu) &=& 4 \left(\frac{\pi^2}{6}-1\right) T_\mathrm{sft}^2 (\Delta f - \Delta f_0).
 \end{eqnarray}
 
 \noindent and obtain the result.
@@ -100,7 +102,7 @@ g_{ab} = \frac{1}{2} \partial_a \partial_b \mu.
 For the $[f, \Delta f]$ parameter space, the mismatch metric For TwoSpect is, in this first approximation,
 
 \begin{equation}
-  g = 2(\pi^2/6 - 1) T_\mathrm{sft}^2  [[1, 0][0, 1]].
+  g = 2(\frac{\pi^2}{6} - 1) T_\mathrm{sft}^2  [[1, 0][0, 1]].
 \end{equation}
 
 Along lines of $f$ or $\Delta f$, this returns
