@@ -50,7 +50,7 @@ Taylor expand that pixel, \textit{i.e.,} Dirichlet kernel squared:
 \begin{equation}
 |x_z (n)|^4 \approx 1 + (2- \pi^2/3) \epsilon^2
              = 1 + (2 -\pi^2/3) T_\mathrm{sft}^2
-                 (f_0+ \Delta f_0 \sin(2\pi T_m n /P) - (f+\Deltaf))^2.
+                 (f_0+ \Delta f_0 \sin(2\pi T_m n /P) - (f+\Delta f))^2.
 \end{equation}
 
 Remember that for the 2nd FFT plane power that contributes to the $R$ statistic, most power is concentrated in pixels at the modulation depth extremes, especially at the first harmonic.
@@ -68,13 +68,13 @@ R \propto 2 + (2 -\pi^2/3) T_\mathrm{sft}^2 *
 The maximum is when $f=f_0$, $\Delta f = \Delta f_0$,
 
 \begin{equation}
-R_\mathrm{max{ = 2.
+R_\mathrm{max} = 2.
 \end{equation}
 
 \noindent So 
 
 \begin{eqnarray}
-\mu &=& 1 - R / R_\mathrm{max}
+\mu &=& 1 - R / R_\mathrm{max}\\
       &=& (\pi^2/6 - 1) T_\mathrm{sft}^2
              [(f_0+\Delta f_0- (f+\Delta f))^2 + (f_0-\Delta f_0- (f- \Delta f))^2]
 \end{eqnarray}
