@@ -1,7 +1,7 @@
 \documentclass{article}
 \begin{document}
-\title{Eccentricity's effect on TwoSpect parameter estimation \\ 
-LIGO-T1500594}
+\title{First approximation to the TwoSpect metric \\ 
+LIGO-T16x}
 \author{Grant David Meadors}
 \date{\today}
 %\affiliation{AEI Hannover/Golm}
@@ -9,153 +9,130 @@ LIGO-T1500594}
 \maketitle
 
 \section{Introduction}
-Reviewing TwoSpect, we must understand how eccentric orbits could affect TwoSpect.
 
-Begin with Leaci \& Prix [PRD 91 (2015) 102003], who provide an equation (B1) for the instantaneous relative frequency offset of gravitational waves from a neutron star in a binary system, when that offset is caused by orbital motion.
-The offset is expresed by a model of phase $\phi$, gravitational wave frequency $f$, parametrized by orbital angular frequency $\Omega = 2 \pi/P$ for period $P$, as well as argument of periapsis $\omega$ and eccentricity $e$.
-Eccentric anomaly $E$ is a complicated function of time $t$.
-Let the coefficient $a_\mathrm{p} = (a \sin i)/c$, for inclination $i$ and semi-major axis $a$ (the projected semi-major axis is $a \sin i$). 
-Also let $(\delta f) / f$ denote the instantaneous relative frequency offset; then,
+TwoSpect papers by Goetz \& Riles [\textit{Classical and Quantum Gravity} \textbf{28} (2011) 215006] and Meadors, Goetz \& Riles [\textit{Classical and Quantum Gravity} \textbf{33} (2011) 105017] have not explicitly stated the mismatch metric for the $R$ statistic.
+This omission stems from complexity: $R$ is a normalized, background-subtracted sum of powers of FFT pixels of the powers of FFT bins.
+In the first methods papers, we have relied on Monte Carlo-derived approximations to the mismatch and inferred template grids spacings of $\delta f = \delta \Delta f = (2 T_\mathrm{sft})^{-1}$.
+(In the S6 Scorpius X-1 search, the $\delta \Delta f$ grid was twice as dense).
+We would like to make a first approximation to the TwoSpect metric, analytically, as a sanity check to these simulations.
 
-\begin{equation}
-\left|\frac{\delta f}{f}\right| = \left| \frac{d \phi/dt}{2 \pi f} - 1 \right|,
-\label{irfo_def}
-\end{equation}
-\begin{equation}
-\left| \frac{d\phi/dt}{2\pi f} -1 \right| = a_\mathrm{p} \Omega \left|\frac{\sqrt{1-e^2} \cos E \cos \omega - \sin E \sin \omega}{1-e \cos E} \right|.
-\label{irfo}
-\end{equation}
-
-In TwoSpect papers, such as the methods paper by Goetz \& Riles [CQG 28 (2011) 215006], the observed frequency modulation depth, $\Delta f_\mathrm{obs}$, is discussed.
-This modulation depth is a one of the two search dimensions in the Scorpius X-1 directed search (along with $f$) and can be defined,
-
-\begin{eqnarray}
-\Delta f_\mathrm{obs} &= a_\mathrm{p} \Omega f \nonumber \\
-    &= \frac{2\pi a \sin i}{cP} f.
-\label{moddepth_def}
-\end{eqnarray}
-
-In the $e = 0$ case, $\delta f = \Delta f_\mathrm{obs} \cos E$; in this zero-eccentricity limit, $\Delta f_\mathrm{obs}$ is well-defined. 
-Then the following are both equal to $\Delta f_\mathrm{obs}$,
-
-\begin{enumerate}
-\item frequency-modulation depth (modulation amplitude)
-\item half of the peak-to-peak modulation width 
-\end{enumerate}
-
-TwoSpect's $R$-statistic templates are weighted heavily toward the modulation-depth extrema, because those are stationary points.
-Therefore, the latter, \textit{peak-to-peak}, definition guides TwoSpect's parameter estimation.
-Simulation software, namely MakeFakeData, takes $a \sin i$ as input.
-Yet TwoSpect templates implicitly assume $e=0$, as they include no eccentricity parameter.
-TwoSpect's inference from the highest-statistic templates to the modulation depth $\Delta f_\mathrm{obs}$ (and $a \sin i$) may therefore be skewed, if $e \neq 0$. 
- 
-The inference from the highest-statistic templates to frequency $f$ may likewise be skewed.
-In the $e=0$ case, $f$ is well-defined, equal to both the following quantities:
-
-\begin{enumerate}
-\item intrinsic gravitational-wave frequency
-\item the mean (half the sum) of the max and min modulation frequencies
-\end{enumerate}
-
-TwoSpect, being dominated by the modulation-depth extrema, is guided by the latter definition.
-Again, MakeFakeData takes $f$ as input.
-This means that $f$ estimation may also be skewed, if $e \neq 0$.
-
-Indeed, this is what injection studies have shown. 
-Can Equation~\ref{irfo} account for the observed skew as an effect of the instantaneous relative frequency offset?
-In the rest of this note we show that this appears to be the case.
 
 \section{Derivation}
 
-\textit{Note: different sign conventions are in use for the argument of periapsis, which affects the sign of the observed offsets. 
-Absolute values circumvent this difficulty.}
-
-In the following, $f$ and $\Delta f_\mathrm{obs}$ (defined by Equation~\ref{moddepth_def}) are fixed quantities for a given injection; they correspond to astrophysical parameters.
-We are studying the parameter estimation error in those quantities.
-Call the \textit{apparent frequency offset} (from eccentricity effects) $\delta f_\mathrm{a}$.
-The apparent modulation depth will be $\Delta f_\mathrm{a}$; subtracting the fixed $\Delta f_\mathrm{obs}$ from $\Delta f_\mathrm{a}$ yields the \textit{apparent modulation depth offset}, $\delta \Delta f_\mathrm{a}$.
-It is $\delta f_\mathrm{a}$ and $\delta \Delta f_\mathrm{a}$ that generate parameter mis-estimates for TwoSpect.
-Where $\max$ and $\min$ functions extremize over $E$,
+Start with the 2011 TwoSpect methods paper, eq. 20:
 
 \begin{equation}
-\delta f_\mathrm{a} = \frac{1}{2} \left| \max(\delta f) + \min(\delta f)\right|,
-\label{dfa}
-\end{equation}
-\begin{equation}
-\delta \Delta f_\mathrm{a} = \frac{1}{2} \left| \max(\delta f) - \min(\delta f)\right| - \Delta f_\mathrm{obs}.
-\label{ddfa}
+|x_z (n)|^2 = \frac{\mathrm{sinc}^2 (k+ \Delta f T_\mathrm{sft} \sin (2 \pi T_m n / P)-z}{[(k+df T_\mathrm{sft}
+              \sin (2 \pi T_m n / P) -z)^2 -1]^2},
 \end{equation}
 
-The extremal $\delta f_\mathrm{a}$ and $\delta \Delta f_\mathrm{a}$ depend on Equation \ref{irfo}: the form of the equation immediately shows that an extremum in $E$ and $\omega$ is reached when $E = 0$ and $\omega = n \pi$ for integer $n$.
-Finding $\max(\delta f)$ and $\min(\delta f)$ for general $\omega$ requires solving for $E$,
+\noindent and let $\epsilon = k+ df0 T_\mathrm{sft} \sin(2\pi T_m n / P)-z$,
+ergo $\epsilon = T_\mathrm{sft}(f0+ df0 \sin(2\pi T_m n /P) - (f+df) )$.
+Note $T_m = T_\mathrm{sft/2}$, and that
+we use $\mathrm{sinc}(x) := sin(\pi x)/(\pi x)$
+so
+
+\begin{equation}
+|x_z (n)|^2 = \mathrm{sinc}^2(\epsilon)/[\epsilon^2-1]^2.
+\end{equation}
+
+Suppose that a 2nd FFT plane pixel is proportional to $(|x_z(n)|^2)^2$. This is the
+big assumption: the true pixel is the power of a Fourier transform of
+$|x_z(n)|^2$. The effect of a proper treatment would be to make the
+`inside' shallower than the outside; compare Bessel function horns.
+Since the projected phase component and the Dirichlet kernel itself move
+quadratically in time, we may be justified for now in ignoring this
+higher-order treatment. (For orbital period, one cannot). So pretend the
+2nd FFT pixel has the shape of the Dirichlet kernel.
+
+Taylor expand that pixel, \textit{i.e.,} Dirichlet kernel squared:
+
+\begin{equation}
+|x_z (n)|^4 \approx 1 + (2- \pi^2/3) \epsilon^2
+             = 1 + (2 -\pi^2/3) T_\mathrm{sft}^2
+                 (f_0+ \Delta f_0 \sin(2\pi T_m n /P) - (f+\Deltaf))^2.
+\end{equation}
+
+Remember that for the 2nd FFT plane power that contributes to the $R$ statistic, most power is concentrated in pixels at the modulation depth extremes, especially at the first harmonic.
+Ignoring background subtraction, we assume a mismatch will affect all the pixels in these extremes equivalently, regardless of weighting.
+Moreover, we make assume that the template weight normalization in the denominator of $R$ is the same at the true position and mismatch, so that it cancels out.
+Then construct this highly-simplified $R$ statistic out of two of these pixels, at upper and
+lower extremes:
+
+\begin{equation}
+R \propto 2 + (2 -\pi^2/3) T_\mathrm{sft}^2 *
+             [(f_0+\Delta f_0- (f+\Delta f))^2 + (f_0-\Delta f_0- (f-\Delta f))^2].
+\end{equation}
+
+\noindent
+The maximum is when $f=f_0$, $\Delta f = \Delta f_0$,
+
+\begin{equation}
+R_\mathrm{max{ = 2.
+\end{equation}
+
+\noindent So 
 
 \begin{eqnarray}
-0 = &\frac{-e \sin E}{\left(1 - e \cos E \right)^{2}} \left(\sqrt{1-e^2} \cos E \cos \omega - \sin E \sin \omega \right) +\ldots \nonumber \\
-    &\frac{-1}{\left(1-e \cos E \right)} \left(\sqrt{1-e^2} \sin E \cos \omega + \cos E \sin \omega \right),
+\mu &=& 1 - R / R_\mathrm{max}
+      &=& (\pi^2/6 - 1) T_\mathrm{sft}^2
+             [(f_0+\Delta f_0- (f+\Delta f))^2 + (f_0-\Delta f_0- (f- \Delta f))^2]
 \end{eqnarray}
+
+\noindent Then the metric follows from
+Brady \textit{et al}, [\textit{Physical Review D} \textbf{57} (1998) 2101], eq 5.12.
+
 \begin{equation}
-0 = \sqrt{1-e^2} \sin E \cos \omega + (\cos E - e) \sin \omega.
-\label{maxE}
+g_{ab} = \frac{1}{2} \partial_a \partial_b \mu.
 \end{equation}
 
-\noindent where in the second equality we assume $e\leq 1$ (the orbit is bound).
-Solving this is easiest with a computer algebra system such as Wolfram Alpha, which verifies that $E = \pi n$ are extremal if $\sin \omega = 0$, and states that in other bound orbits the solutions are
+\noindent Begin with
 
 \begin{eqnarray}
-E_1 = 2 \pi n - 2 \tan^{-1} \left(\frac{\sqrt{1-e^2} \tan\left(\frac{\omega}{2}\right)}{1+e} \right),
-\label{maxE1}
-\end{eqnarray} 
-\begin{eqnarray}
-E_2 = 2 \pi n + 2 \tan^{-1} \left(\frac{\sqrt{1-e^2} \cot\left(\frac{\omega}{2}\right)}{1+e} \right).
-\label{maxE2}
+\partial_f \mu &=& 4(\pi^2/6 -1) T_\mathrm{sft}^2 (f-f_0),\\
+\partial_{\Delta f} \mu &=& 4(\pi^2/6-1) T_\mathrm{sft}^2 (\Delta f - \Delta f_0).
 \end{eqnarray}
 
-\noindent For low eccentricity, $e \ll 1$, $e\geq 0$, we can approximate these solutions as $E_1 = 2\pi n - \omega$, $E_2 = 2\pi n + \pi - \omega$.
-These solutions do solve Equation~\ref{maxE} for $e=0$.
-The MDC paper by Messenger et al [PRD 92 (2015) 023006] interprets Galloway et al [Astrophys J 781 (2014) 14] as a $3-\sigma$ upper limit on $e$ at 0.068, so this approximation seems useful.
+\noindent and obtain the result.
 
-Up to an overall sign ambiguity (inherited from Equation~\ref{irfo}, affecting Equations~\ref{dfa} and~\ref{ddfa}), we will calculate $\max(\delta f)$ using $E_1 = -\omega$ and $\min(\delta f)$ using $E_2 = \pi-\omega$:
+\section{Result}
 
-\begin{equation}
-\max(\delta f) = \Delta f_\mathrm{obs} \left(\frac{\sqrt{1-e^2} \cos^2 \omega + \sin^2 \omega}{1-e \cos (\omega)} \right),
-\label{maxdeltaf}
-\end{equation}
-\begin{equation}
-\min(\delta f) = -\Delta f_\mathrm{obs} \left(\frac{\sqrt{1-e^2} \cos^2\omega + \sin^2 \omega}{1+e \cos \omega} \right),
-\label{mindeltaf}
-\end{equation}
-
-\noindent So inserting these into Equations~\ref{dfa} and ~\ref{ddfa} yields
+For the $[f, \Delta f]$ parameter space, the mismatch metric For TwoSpect is, in this first approximation,
 
 \begin{equation}
-\delta f_\mathrm{a} = \frac{1}{2} \left( \frac{\sqrt{1-e^2} \cos^2 \omega + \sin^2 \omega}{1-e^2 \cos^2 \omega} e \cos \omega \right) \Delta f_\mathrm{obs},
-\label{solved_dfa}
-\end{equation}
-\begin{equation}
-\delta \Delta f_\mathrm{a} = \frac{1}{2} \left( \frac{\sqrt{1-e^2} \cos^2 \omega + \sin^2 \omega}{1-e^2 \cos^2 \omega} \right)  \Delta f_\mathrm{obs} - \Delta f_\mathrm{obs}.
-\label{solved_ddfa}
+  g = 2(\pi^2/6 - 1) T_\mathrm{sft}^2  [[1, 0][0, 1]].
 \end{equation}
 
-Equations~\ref{solved_dfa} and~\ref{solved_ddfa} correctly predict the observed offsets, up to a sign (which is dependent on the argument of periapsis convention).
-It is easy to verify that for $e=0.07$, they predict that an $a\sin i = 1.95$ light-s, $f=2039.95$ Hz signal will have an extremal case at $\omega=0$ with shifts of 25.7 mHz in $\delta f_\mathrm{a}$ and 0.9 mHz in $\delta \Delta f_\mathrm{a}$, which is what is seen in injections.
-
-The equations are related, taking care when $e$ or $\omega$ equals $0$, by
+Along lines of $f$ or $\Delta f$, this returns
+the same mismatch using Brady \textit{et al} eq 5.11 as does the actual mismatch:
 
 \begin{equation}
-\delta f_\mathrm{a} = \left(\delta \Delta f_\mathrm{a} + \Delta f_\mathrm{obs} \right) e \cos \omega,
+\mu = (\pi^2/6 -1) T_\mathrm{sft}^2 
+        [(f_0 + \Delta f_0 - (f + \Delta f))^2 + (f_0 - \Delta f_0 - (f - \Delta f)^2) ],
 \end{equation}
+
+Of course, the metric
+fails to capture the degeneracies along the diagonals.
+As a quadratic approximation, it cannot capture that complexity.
+
+We find that the nearest template in either dimension should be
+
 \begin{equation}
-\delta \Delta f_\mathrm{a} = \frac{\delta f_\mathrm{a}}{e \cos \omega} - \Delta f_\mathrm{obs}.
+[f-f0] = (2 (\pi^2/6 - 1))^(-1/2) * \sqrt(\mu) / T_\mathrm{sft}
+       \approx 0.88 \sqrt(\mu) / T_\mathrm{sft}
 \end{equation}
 
-%And for low eccentricity cases, the following approximations can be useful:
+\noindent
+which for 0.2 mismatch (our standard in S6) is
 
+\begin{equation}
+[f-f0] = 0.39/T_\mathrm{sft}
+\end{equation}
 
-%\begin{equation}
-%\delta f_\mathrm{a} = \frac{e \Delta f_\mathrm{obs}}{1-e^2\cos^2\omega} \cos \omega
-%\end{equation}
-%\begin{equation}
-%\delta \Delta f_\mathrm{a} = \frac{e^2 \Delta f_\mathrm{obs}}{1-e^2\cos^2\omega} \cos^2\omega.
-%\end{equation}
+We have a grid spacing of $0.5/T_\mathrm{sft}$, meaning that in the 1D case the
+nearest template should be no farther away than $0.25/T_\mathrm{sft}$.
+
+Hence, our choice of grid-spacing seems analytically justified.
+
 
 \end{document}
